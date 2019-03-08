@@ -1,0 +1,19 @@
+from naoqi import ALProxy
+import sys 
+
+path = 'D:\\fyp\\test\\movement.txt'
+
+x=1
+all_words = 0
+robotIP="192.168.0.105"
+motion_service = ALProxy("ALMotion",robotIP,9559)
+posture_service = ALProxy("ALRobotPosture",robotIP,9559)
+motion_service.setStiffnesses("Body",0)
+posture_service.goToPosture("StandInit",0.5)
+names = ['RShoulderPitch', 'RShoulderRoll','RElbowRoll']# , 'RWristYaw', 'RHand']
+time = 0.35
+times = [ [time], [time], [time]]# [time], [time], [time] ]
+float x=-2.0
+while x<2.0:
+    motion_service.setAngles('RShoulderPitch', x, 0.1)
+    x=x+0.25

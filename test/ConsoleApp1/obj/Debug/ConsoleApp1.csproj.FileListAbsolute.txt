@@ -1,0 +1,7 @@
+D:\fyp\test\ConsoleApp1\bin\Debug\ConsoleApp1.exe.config
+D:\fyp\test\ConsoleApp1\bin\Debug\ConsoleApp1.exe
+D:\fyp\test\ConsoleApp1\bin\Debug\ConsoleApp1.pdb
+D:\fyp\test\ConsoleApp1\obj\Debug\ConsoleApp1.csprojAssemblyReference.cache
+D:\fyp\test\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CoreCompileInputs.cache
+D:\fyp\test\ConsoleApp1\obj\Debug\ConsoleApp1.exe
+D:\fyp\test\ConsoleApp1\obj\Debug\ConsoleApp1.pdb

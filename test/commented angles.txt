@@ -1,0 +1,175 @@
+
+               float Sx, Sy, Sz;
+               Sx= skeletons[track].Joints[JointType.ShoulderRight].Position.X;
+               Sy= skeletons[track].Joints[JointType.ShoulderRight].Position.Y;
+               Sz= skeletons[track].Joints[JointType.ShoulderRight].Position.Z;
+               float Ex, Ey, Ez;
+               Ex = skeletons[track].Joints[JointType.ElbowRight].Position.X;
+               Ey = skeletons[track].Joints[JointType.ElbowRight].Position.Y;
+               Ez = skeletons[track].Joints[JointType.ElbowRight].Position.Z;
+               float Wx, Wy, Wz ;
+               Wx=skeletons[track].Joints[JointType.WristRight].Position.X;
+               Wy=skeletons[track].Joints[JointType.WristRight].Position.Y;
+               Wz=skeletons[track].Joints[JointType.WristRight].Position.Z;
+
+               double angle,pitch;
+
+
+               //RShoulderPitch
+               if (Sy < Ey)
+               {
+                   angle = Math.Atan(Math.Abs(Sy - Ey) / Math.Abs(Sz - Ez));
+                   angle = -(angle);
+                   if (angle < -2.0)
+                   {
+                       angle = -2.0;
+                   }
+
+               }
+               else
+               {
+                   angle = Math.Atan((Sz - Ez) / (Sy - Ey));
+                   angle = Math.PI / 2 - angle;                   
+               }
+
+                pitch = angle;
+               string RShoulderPitch = angle.ToString();
+
+               //RShoulderRoll
+               if (Sz < Ez)
+               {
+                   var test = Sz;
+                   var anderetest = Ez;
+                   Sz = anderetest;
+                   Ez = test;
+               }
+
+               if (Sz - Ez < 0.1)
+               {
+                   Sz = 1.0f;
+                   Ez = 0.8f;
+               }
+
+               angle = Math.Atan((Sx - Ex) / (Sz - Ez));
+
+               string RShoulderRoll = angle.ToString();
+
+
+                   //RElbowRoll
+                   Vector3D V1 = new Vector3D(skeletons[track].Joints[JointType.ShoulderRight].Position.X, skeletons[track].Joints[JointType.ShoulderRight].Position.Y, skeletons[track].Joints[JointType.ShoulderRight].Position.Z);
+                   Vector3D V2 = new Vector3D(skeletons[track].Joints[JointType.ElbowRight].Position.X, skeletons[track].Joints[JointType.ElbowRight].Position.Y, skeletons[track].Joints[JointType.ElbowRight].Position.Z);
+                   Vector3D V3 = new Vector3D(skeletons[track].Joints[JointType.WristRight].Position.X, skeletons[track].Joints[JointType.WristRight].Position.Y, skeletons[track].Joints[JointType.WristRight].Position.Z);
+
+                   angle =Math.PI- AngleBetweenTwoVectors(V2 - V1, V2- V3);
+
+                string Relbowroll = angle.ToString();
+
+               //RElbow Yaw
+               if (Math.Abs(Ey - Wy) < 0.2 && Math.Abs(Ez-Wz) < 0.2 && (Wx > Ex) )
+               {
+                   angle = 0;
+               }
+               else if(Math.Abs(Ex - Wx) < 0.1 && Math.Abs(Ez - Wz) < 0.1 && (Wy > Ey))
+               {
+                   angle = -Math.PI / 2;
+               }
+               else if(Math.Abs(Ex - Wx) < 0.1 && Math.Abs(Ez - Wz) < 0.1 && (pitch > 0.87))
+               {
+                   angle = -Math.PI / 2;
+               }
+               else if(Math.Abs(Ey - Wy) < 0.1 && Math.Abs(Ez - Wz) < 0.1 && (pitch > 0.87))
+               {
+                   angle = 0;
+               }
+               else if(Math.Abs(Ex - Wx) < 0.1 && Math.Abs(Ey - Wy) < 0.1 && (pitch > 0.87))
+               {
+                   angle = -Math.PI / 2;
+               }
+
+               else
+               {
+                   angle = Math.Atan((Ez - Wz) / (Ey - Wy));
+                   angle = -angle + pitch;
+                   angle = -angle;
+               }                             
+               string RElbowYaw = angle.ToString();
+
+
+
+
+
+               var dotproduct = ((Sx-Ex)*(Wx-Ex)) + ((Sy - Ey) * (Wy - Ey)) + ((Sz - Ez) * (Wz - Ez));
+               var mag1 = Math.Pow(sqr(Sx - Ex) + sqr(Sy - Ey) + sqr(Sz - Ez), 0.5);
+               var mag2 = Math.Pow(sqr(Wx - Ex) + sqr(Wy - Ey) + sqr(Wz - Ez), 0.5);
+
+               angle = Math.PI - Math.Acos(dotproduct / (mag1 * mag2))- Math.Abs(pitch);
+
+               string RElbowRoll = angle.ToString();
+
+
+
+               //LeftSide
+               Sx = skeletons[track].Joints[JointType.ShoulderLeft].Position.X;
+               Sy = skeletons[track].Joints[JointType.ShoulderLeft].Position.Y;
+               Sz = skeletons[track].Joints[JointType.ShoulderLeft].Position.Z;
+
+               Ex = skeletons[track].Joints[JointType.ElbowLeft].Position.X;
+               Ey = skeletons[track].Joints[JointType.ElbowLeft].Position.Y;
+               Ez = skeletons[track].Joints[JointType.ElbowLeft].Position.Z;
+
+               Wx = skeletons[track].Joints[JointType.WristLeft].Position.X;
+               Wy = skeletons[track].Joints[JointType.WristLeft].Position.Y;
+               Wz = skeletons[track].Joints[JointType.WristLeft].Position.Z;
+
+               //LShoulderPitch
+               if (Sy < Ey)
+               {
+                   angle = Math.Atan(Math.Abs(Sy - Ey) / Math.Abs(Sz - Ez));
+
+                   angle = -(angle);
+                   if (angle < -2.0)
+                   {
+                       angle = -2.0;
+                   }
+               }
+               else
+               {
+                   angle = Math.Atan((Sz - Ez) / (Sy - Ey));
+                   angle = Math.PI / 2 - angle;
+               }
+               string LShoulderPitch = angle.ToString();
+
+               //LShoulderRoll
+               if (Sz < Ez)
+               {
+                   var test = Sz;
+                   var anderetest = Ez;
+                   Sz =  anderetest;
+                   Ez = test;
+               }
+
+
+               if (Sz - Ez < 0.1)
+               {
+                   Sz = 1.0f;
+                   Ez = 0.8f;
+               }
+
+               angle = Math.Atan((Sx - Ex) / (Sz - Ez));
+
+               string LShoulderRoll = angle.ToString();
+
+               //LElbowRoll
+
+                V1 = new Vector3D(skeletons[track].Joints[JointType.ShoulderLeft].Position.X, skeletons[track].Joints[JointType.ShoulderLeft].Position.Y, skeletons[track].Joints[JointType.ShoulderLeft].Position.Z);
+                V2 = new Vector3D(skeletons[track].Joints[JointType.ElbowLeft].Position.X, skeletons[track].Joints[JointType.ElbowLeft].Position.Y, skeletons[track].Joints[JointType.ElbowLeft].Position.Z);
+                V3 = new Vector3D(skeletons[track].Joints[JointType.WristLeft].Position.X, skeletons[track].Joints[JointType.WristLeft].Position.Y, skeletons[track].Joints[JointType.WristLeft].Position.Z);
+
+               angle = AngleBetweenTwoVectors(V2 - V1, V2 - V3) - Math.PI;
+               string LElbowRoll = angle.ToString();
+
+
+
+
+                //string TEXT = "1 " + RShoulderPitch+" " +RShoulderRoll + " " +Relbowroll+" "+"3" + " " +LShoulderPitch + " " +LShoulderRoll + " " + LElbowRoll + " " + Walking;
+                // string ASJAD = "1" + " "+RElbowRoll;
